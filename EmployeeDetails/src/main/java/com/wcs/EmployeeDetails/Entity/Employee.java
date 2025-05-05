@@ -1,9 +1,5 @@
 package com.wcs.EmployeeDetails.Entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
@@ -19,4 +15,7 @@ public class Employee {
     private String firstname;
     private String lastname;
     private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private IdCard  idCard;
 }

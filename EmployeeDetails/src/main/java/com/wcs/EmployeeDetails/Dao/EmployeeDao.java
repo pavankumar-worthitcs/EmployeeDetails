@@ -1,12 +1,10 @@
 package com.wcs.EmployeeDetails.Dao;
 
 import com.wcs.EmployeeDetails.Entity.Employee;
+import com.wcs.EmployeeDetails.Entity.IdCard;
 import com.wcs.EmployeeDetails.dto.EmployeeDTO;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,8 +22,6 @@ public class EmployeeDao {
 
 
     public List<Employee> searchEmployeeByDetails(EmployeeDTO employee) {
-
-
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = criteriaBuilder.createQuery(Employee.class);
         Root<Employee> root = query.from(Employee.class);
@@ -41,6 +37,19 @@ public class EmployeeDao {
         query.select(root).where(finalPredicate);
 
          return entityManager.createQuery(query).getResultList();
+
+    }
+
+    public List<Object[]> fetchEmployeeData(String attribute1,String attribute2){
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = criteriaBuilder.createQuery(Object[].class);
+        Root<Employee> employee =query.from(Employee.class);
+
+        Join<Employee, IdCard> idCard =employee.join("idCard", JoinType.LEFT);
+
+        query.multiselect(employee.get(attribute1),idCard.get(attribute2));
+        return entityManager.createQuery(query).getResultList();
 
     }
 

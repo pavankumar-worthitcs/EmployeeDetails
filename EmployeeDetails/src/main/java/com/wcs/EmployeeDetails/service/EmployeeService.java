@@ -1,8 +1,10 @@
 package com.wcs.EmployeeDetails.service;
 import com.wcs.EmployeeDetails.Dao.EmployeeDao;
 import com.wcs.EmployeeDetails.Entity.Employee;
+import com.wcs.EmployeeDetails.Entity.IdCard;
 import com.wcs.EmployeeDetails.Repository.EmployeeRepository;
 import com.wcs.EmployeeDetails.dto.EmployeeDTO;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,12 @@ public class EmployeeService {
 
     public Employee saveEmployee(Employee employee){
         return employeeRepository.save(employee);
+    }
+
+    public List<Object[]> fetchEmployeeData(String attribute1,String attribute2){
+
+      return employeeDao.fetchEmployeeData(attribute1,attribute2);
+
     }
 
 }

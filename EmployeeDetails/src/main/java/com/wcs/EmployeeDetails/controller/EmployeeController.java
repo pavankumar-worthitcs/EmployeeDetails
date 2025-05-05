@@ -4,10 +4,7 @@ import com.wcs.EmployeeDetails.Entity.Employee;
 import com.wcs.EmployeeDetails.dto.EmployeeDTO;
 import com.wcs.EmployeeDetails.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +23,13 @@ public class EmployeeController {
     @PostMapping("/saveEmployee")
     public Employee saveEmployee(@RequestBody Employee employee){
         return employeeService.saveEmployee(employee);
+    }
+
+    @GetMapping("/fetchEmployeeData/{attribute1}/{attribute2}")
+    public List<Object[]> fetchEmployeeData(@PathVariable(name = "attribute1") String attribute1,@PathVariable(name="attribute2") String attribute2){
+
+        return employeeService.fetchEmployeeData(attribute1,attribute2);
+
     }
 
 

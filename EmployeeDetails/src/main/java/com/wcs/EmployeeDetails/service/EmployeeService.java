@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -35,6 +36,23 @@ public class EmployeeService {
       return employeeDao.fetchEmployeeData(attribute1,attribute2);
 
     }
+
+    public Integer updateEmployeeDetails(Long employeeId,String newEmail){
+        return employeeDao.updateEmployeeDetails(employeeId,newEmail);
+    }
+
+    public Integer deleteEmployeeById(Long employeeId){
+        return employeeDao.deleteEmployeeById(employeeId);
+    }
+
+   public Employee createNewIdCardForEmployee(Long employeeId,IdCard newIdCard){
+        Optional<Employee> dbEmployee =employeeRepository.findById(employeeId);
+       if(dbEmployee.isPresent()){
+           dbEmployee.get().setIdCard(newIdCard);
+           return saveEmployee(dbEmployee.get());
+       }
+       return null;
+   }
 
     public List<DTORequest> fetchEmployeeWithMatchedData(String data, int page, int size) {
         return employeeDao.fetchEmployeeWithMatchedData(data,page,size);

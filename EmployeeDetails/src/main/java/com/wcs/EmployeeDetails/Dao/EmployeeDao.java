@@ -2,17 +2,22 @@ package com.wcs.EmployeeDetails.Dao;
 
 import com.wcs.EmployeeDetails.Entity.Employee;
 import com.wcs.EmployeeDetails.Entity.IdCard;
+import com.wcs.EmployeeDetails.Repository.EmployeeRepository;
 import com.wcs.EmployeeDetails.dto.DTORequest;
 import com.wcs.EmployeeDetails.dto.EmployeeDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public class EmployeeDao {
 
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     private final EntityManager entityManager;
 
@@ -77,6 +82,28 @@ public class EmployeeDao {
                 idCard.get("number")
         );
     }
+
+
+    @Transactional
+    public Integer updateEmployeeDetails(Long employeeId,String newEmail) {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaUpdate<Employee> updateQuery = criteriaBuilder.createCriteriaUpdate(Employee.class);
+            Root<Employee> employee = updateQuery.from(Employee.class);
+            updateQuery.set(employee.get("email"), newEmail).where(criteriaBuilder.equal(employee.get("id"), employeeId));
+            return entityManager.createQuery(updateQuery).executeUpdate();
+    }
+
+
+    @Transactional
+    public Integer deleteEmployeeById(Long employeeId){
+            CriteriaBuilder criteriaBuilder =entityManager.getCriteriaBuilder();
+            CriteriaDelete<Employee> deleteQuery =criteriaBuilder.createCriteriaDelete(Employee.class);
+            Root<Employee> employee=deleteQuery.from(Employee.class);
+            deleteQuery.where(criteriaBuilder.equal(employee.get("id"),employeeId));
+            return entityManager.createQuery(deleteQuery).executeUpdate();
+
+    }
+
 
 
     public Predicate buildPredicate(CriteriaBuilder criteriaBuilder, Root<Employee> employee, Join<Employee, IdCard> idCard,String data){

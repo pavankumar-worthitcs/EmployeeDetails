@@ -59,7 +59,7 @@ public class EmployeeDao {
             Predicate finalPredicate = buildPredicate(criteriaBuilder,employee,idCard,data);
 
             query.select(buildDTOResult(criteriaBuilder,employee,idCard))
-                    .where(finalPredicate).orderBy(criteriaBuilder.asc(employee.get("lastname")));
+                    .where(finalPredicate).orderBy(criteriaBuilder.asc(employee.get("id")));
 
             return pagination(query,page,size);
     }

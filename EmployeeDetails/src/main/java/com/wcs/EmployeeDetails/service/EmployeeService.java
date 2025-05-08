@@ -37,8 +37,17 @@ public class EmployeeService {
 
     }
 
+    public String manageEmployee(Integer optionType,Integer employeeId,String firstName,String lastName,String email){
+         employeeRepository.manageEmployee(optionType, employeeId, firstName, lastName, email);
+         return employeeRepository.getResultMessage();
+    }
+
     public Integer updateEmployeeDetails(Long employeeId,String newEmail){
         return employeeDao.updateEmployeeDetails(employeeId,newEmail);
+    }
+
+    public List<Employee> employeesList(){
+        return employeeRepository.findAll();
     }
 
     public Integer deleteEmployeeById(Long employeeId){

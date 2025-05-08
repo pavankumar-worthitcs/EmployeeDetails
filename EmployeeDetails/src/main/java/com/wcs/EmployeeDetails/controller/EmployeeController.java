@@ -62,9 +62,18 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/fetchEmployeeWithMatchedData/{data}/{page}/{size}")
-    public ResponseEntity<List<DTORequest>> fetchEmployeeWithMatchedData(@PathVariable(name = "data") String data, @PathVariable(name = "page") int page, @PathVariable(name = "size") int size) {
-        if (page == 0 || size == 0 || data.isEmpty()) {
+    @PostMapping("/manageEmployee")
+    public String manageEmployee(@RequestParam(required = false)Integer optionType,
+                                 @RequestParam(required = false)Integer employeeId,
+                                 @RequestParam(required = false)String firstName,
+                                 @RequestParam(required = false)String lastName,
+                                 @RequestParam(required = false)String email){
+        return employeeService.manageEmployee(optionType, employeeId, firstName, lastName, email);
+    }
+
+    @GetMapping("/fetchEmployeeWithMatchedData/{page}/{size}")
+    public ResponseEntity<List<DTORequest>> fetchEmployeeWithMatchedData( @PathVariable(name = "page") int page, @PathVariable(name = "size") int size,@RequestParam String data) {
+        if (page == 0 || size == 0) {
             return ResponseEntity.badRequest().build();
         }
         List<DTORequest> responses = employeeService.fetchEmployeeWithMatchedData(data, page, size);
@@ -74,6 +83,11 @@ public class EmployeeController {
         else {
             return ResponseEntity.ok(responses);
         }
+    }
+
+    @GetMapping("/employeesList")
+    public List<Employee> employeeList (){
+        return employeeService.employeesList();
     }
 
     @PutMapping("/createNewIdCardForEmployee/{id}")
